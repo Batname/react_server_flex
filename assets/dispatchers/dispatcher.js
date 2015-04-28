@@ -4,16 +4,17 @@ import promise from "es6-promise";
 
 let Promise = promise.Promise;
 
-let _callbacks = [],
-    _promises = [];
+let _callbacks = [];
+let _promises = [];
 
 
-let _addPromise = function (callback, payload) {
-  _promises.push(new Promise(function (resolve, reject) {
-    if(_callbacks(payload)) {
+let _addPromise = function(callback, payload) {
+
+  _promises.push(new Promise(function(resolve, reject) {
+    if (callback(payload)) {
       resolve(payload);
     } else {
-      reject(new Error("Dispatsher callback unsuccessful"));
+      reject(new Error('Dispatcher callback unsuccessful'));
     }
   }));
 };
@@ -24,10 +25,10 @@ let _clearPromises = function() {
 
 class Dispatcher {
   dispatch(payload) {
-      _callbacks.forEach(function(callback) {
-        _addPromise(callback, payload);
-      });
-      Promise.all(_promises).then(_clearPromises);
+    _callbacks.forEach((callback) => {
+      _addPromise(callback, payload);
+    });
+    Promise.all(_promises).then(_clearPromises);
   }
   register(callback) {
       _callbacks.push(callback);

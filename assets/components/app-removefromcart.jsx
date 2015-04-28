@@ -2,21 +2,19 @@
 
 import React from "react";
 import AppActions from "./../actions/app-actions";
-import Catalog from "./app-catalog";
-import Cart from "./app-cart";
 
-let App =
+let RemoveFromCart =
   React.createClass({
+    handleClick:function(){
+      AppActions.removeItem(this.props.index);
+    },
     render:function(){
       return (
         <div>
-          <h1>Let s Shop</h1>
-          <Catalog />
-          <h1>Cart</h1>
-          <Cart />
+          <button onClick={this.handleClick}>x</button>
         </div>
         )
     }
   });
 
-export default App;
+export default RemoveFromCart;
