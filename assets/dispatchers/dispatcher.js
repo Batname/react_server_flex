@@ -1,6 +1,7 @@
 "use strict";
 
 import promise from "es6-promise";
+import _ from "lodash";
 
 let Promise = promise.Promise;
 
@@ -9,7 +10,6 @@ let _promises = [];
 
 
 let _addPromise = function(callback, payload) {
-
   _promises.push(new Promise(function(resolve, reject) {
     if (callback(payload)) {
       resolve(payload);
@@ -23,17 +23,21 @@ let _clearPromises = function() {
   _promises = [];
 };
 
-class Dispatcher {
-  dispatch(payload) {
-    _callbacks.forEach((callback) => {
+let Dispatcher = function() {};
+Dispatcher.prototype = _.merge(Dispatcher.prototype, {
+
+  register: function(callback) {
+    _callbacks.push(callback);
+    return _callbacks.length - 1; // index
+  },
+
+  dispatch: function(payload) {
+    _callbacks.forEach(function(callback) {
       _addPromise(callback, payload);
     });
     Promise.all(_promises).then(_clearPromises);
   }
-  register(callback) {
-      _callbacks.push(callback);
-      return _callbacks.length - 1; // index
-  }
-};
+
+});
 
 export default Dispatcher;

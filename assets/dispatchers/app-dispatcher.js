@@ -1,14 +1,16 @@
 "use strict";
 
 import Dispatcher from "./dispatcher";
+import _ from "lodash";
 
-class AppDispatcher extends Dispatcher {
-  handleViewAction(action){
+let AppDispatcher = _.merge(Dispatcher.prototype, {
+  handleViewAction: function(action){
     console.log('action', action);
     this.dispatch({
       source: 'VIEW_ACTION',
       action:action
     })
   }
-}
+});
+
 export default AppDispatcher;

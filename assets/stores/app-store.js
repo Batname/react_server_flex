@@ -1,8 +1,9 @@
 "use strict";
 
-import AppDispatsher from "./../dispatchers/app-dispatcher";
+import AppDispatcher from "./../dispatchers/app-dispatcher";
 import AppConstants from "./../constants/app-constants";
 import eventEmitter from 'events';
+import _ from "lodash";
 
 let EventEmitter = eventEmitter.EventEmitter;
 
@@ -11,7 +12,8 @@ const CHANGE_EVENT = "chenge";
 let _catalog = [
   {id:1, title: "Widget #1", cost:1},
   {id:2, title: "Widget #2", cost:2},
-  {id:3, title: "Widget #3", cost:3}
+  {id:3, title: "Widget #3", cost:3},
+  {id:4, title: "Widget #4", cost:4}
 ];
 
 let _cartItems = [];
@@ -48,54 +50,50 @@ function _addItem(item){
   }
 };
 
-class AppStore extends EventEmitter {
-
-  emitChange() {
+let AppStore = _.merge(EventEmitter.prototype, {
+  emitChange:function(){
     this.emit(CHANGE_EVENT)
-  }
+  },
 
-  addChangeListener(callback){
-     this.on(CHANGE_EVENT, callback)
-  }
+  addChangeListener:function(callback){
+    this.on(CHANGE_EVENT, callback)
+  },
 
-  removeChangeListener(callback){
-     this.removeListener(CHANGE_EVENT, callback)
-  }
+  removeChangeListener:function(callback){
+    this.removeListener(CHANGE_EVENT, callback)
+  },
 
-  getCart(){
-     return _cartItems;
-  }
+  getCart:function(){
+    return _cartItems
+  },
 
-  getCatalog(){
-      return _catalog
-  }
+  getCatalog:function(){
+    return _catalog
+  },
 
-  dispatcherIndex(payload){
-    console.log(payload, "dispatcherIndex");
-    new AppDispatcher.register(function(payload){
-      let action = payload.action;
-      switch(action.actionType){
-        case AppConstants.ADD_ITEM:
-          _addItem(payload.action.item);
-          break;
+  dispatcherIndex:AppDispatcher.register(function(payload){
+    let action = payload.action; // this is our action from handleViewAction
+    switch(action.actionType){
+      case AppConstants.ADD_ITEM:
+        _addItem(payload.action.item);
+        break;
 
-        case AppConstants.REMOVE_ITEM:
-          _removeItem(payload.action.index);
-          break;
+      case AppConstants.REMOVE_ITEM:
+        _removeItem(payload.action.index);
+        break;
 
-        case AppConstants.INCREASE_ITEM:
-          _increaseItem(payload.action.index);
-          break;
+      case AppConstants.INCREASE_ITEM:
+        _increaseItem(payload.action.index);
+        break;
 
-        case AppConstants.DECREASE_ITEM:
-          _decreaseItem(payload.action.index);
-          break;
-      }
-      this.emitChange();
+      case AppConstants.DECREASE_ITEM:
+        _decreaseItem(payload.action.index);
+        break;
+    }
+    AppStore.emitChange();
 
-      return true;
-    })
-  }
-};
+    return true;
+  })
+})
 
 export default AppStore;

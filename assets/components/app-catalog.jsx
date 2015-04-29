@@ -1,10 +1,8 @@
 "use strict";
 
 import React from "react";
-import appStore from "./../stores/app-store";
+import AppStore from "./../stores/app-store";
 import AddToCart from "./app-addtocart.jsx";
-
-let AppStore = new appStore();
 
 function getCatalog () {
   return {items: AppStore.getCatalog()}

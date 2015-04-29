@@ -1,13 +1,10 @@
 "use strict";
 
 import React from "react";
-import appStore from "./../stores/app-store";
+import AppStore from "./../stores/app-store";
 import RemoveFromCart from "./app-removefromcart.jsx";
 import Increase from "./app-increase.jsx";
 import Decrease from "./app-decrease.jsx";
-
-
-let AppStore = new appStore();
 
 function cartItems() {
   return {items: AppStore.getCart()}
