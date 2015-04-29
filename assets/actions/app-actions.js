@@ -1,7 +1,5 @@
 import AppConstants from "./../constants/app-constants";
-import appDispatcher from "./../dispatchers/app-dispatcher";
-
-let AppDispatcher = new appDispatcher();
+import AppDispatcher from "./../dispatchers/app-dispatcher";
 
 let AppActions = {
   addItem(item) {
