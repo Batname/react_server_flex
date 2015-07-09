@@ -3,24 +3,18 @@ import AppStore from '../../stores/app-store';
 import RemoveFromCart from './app-removefromcart';
 import Increase from './app-increase';
 import Decrease from './app-decrease';
+import storeWhatchMixin from '../../mixins/StoreWatchMixin';
+import {Link} from 'react-router-component';
 
-function cartItems() {
+function cartItem () {
   return {items: AppStore.getCart()};
 }
 
 let Cart = React.createClass({
-  getInitialState: function() {
-    return cartItems();
-  },
-  componentWillMount: function() {
-    AppStore.addChangeListener(this._onChange);
-  },
-  _onChange: function() {
-    this.setState(cartItems());
-  },
-  render: function() {
+  mixins: [storeWhatchMixin(cartItem)],
+  render() {
     let total = 0;
-    let items = this.state.items.map(function(item, i){
+    let items = this.state.items.map((item, i) =>{
       let subtotal = item.cost * item.qty;
       total += subtotal;
       return (
@@ -37,6 +31,7 @@ let Cart = React.createClass({
         );
     });
     return (
+      <div>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -57,6 +52,8 @@ let Cart = React.createClass({
             </tr>
           </tfoot>
         </table>
+        <Link href="/">Continue shopping</Link>
+       </div>
       );
   }
 });

@@ -12,7 +12,7 @@ let AddToCart =
     render: function(){
       return (
         <div>
-          <button onClick={this.handleClick}>Add To cart</button>
+          <button className="btn btn-default" onClick={this.handleClick}>Add To cart</button>
         </div>
         );
     }

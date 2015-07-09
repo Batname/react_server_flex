@@ -5,9 +5,14 @@ var gulp = require("gulp"),
 
 gulp.task("default", ["build-dev"]);
 
-gulp.task("build-dev", ["webpack:build-dev"], function () {
+gulp.task("build-dev", ["webpack:build-dev", "copy"], function () {
   gulp.watch(["assets/**/*"], ["webpack:build-dev"]);
 });
+
+gulp.task('copy', function(){
+  gulp.src('assets/images/**/*.*')
+      .pipe(gulp.dest('public/images'));
+})
 
 var myDevConfig = Object.create(webpackConf);
 myDevConfig.devtool = "sourcemap";

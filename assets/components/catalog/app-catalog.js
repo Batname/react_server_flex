@@ -1,6 +1,7 @@
 import React from 'react';
 import AppStore from './../../stores/app-store';
-import AddToCart from './app-addtocart';
+import CatalogItem from './app-catalogitem';
+import storeWatchMixin from '../../mixins/StoreWatchMixin';
 
 function getCatalog () {
   return {items: AppStore.getCatalog()};
@@ -8,17 +9,15 @@ function getCatalog () {
 
 let Catalog =
   React.createClass({
-    getInitialState: function () {
-      return getCatalog();
-    },
+    mixins: [storeWatchMixin(getCatalog)],
     render: function() {
       let items = this.state.items.map(function(item) {
-        return <tr><td>{item.title}</td><td>${item.cost}</td><td><AddToCart item={item} /></td></tr>;
+        return <CatalogItem item={item} />;
       });
       return (
-        <table className="table table-hover">
+        <div className="row">
         {items}
-        </table>
+        </div>
         );
     }
   });

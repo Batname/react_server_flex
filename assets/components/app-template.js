@@ -1,8 +1,17 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
+import Header from './header/app-header';
 
 let Template = {
+  propsTypes: {
+    children: PropTypes.object
+  },
   render(){
-    return ();
+    return (
+          <div className='container'>
+            <Header />
+            {this.props.children}
+          </div>
+        );
   }
 };
 

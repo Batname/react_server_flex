@@ -10,13 +10,14 @@ const CHANGE_EVENT = 'chenge';
 let _catalog = [];
 
 _.times(9, (n)=>{
+  let i = n + 1;
   _catalog.push({
-    'id': `Widget ${n}`,
-    'title': `Widget # ${n}`,
+    'id': `Widget ${i}`,
+    'title': `Widget # ${i}`,
     'summary': 'My summary',
     'description': 'My description',
-    'img': '/assets/product.png',
-    'cost': n
+    'img': '/images/product.png',
+    'cost': i
   });
 });
 
@@ -54,28 +55,41 @@ function _addItem(item){
   }
 }
 
+function _cartTotals(){
+  let qty = 0, total = 0;
+  _cartItems.forEach((cartItem) => {
+    qty += cartItem.qty;
+    total += cartItem.qty * cartItem.cost;
+  });
+  return {'qty': qty, 'total': total};
+}
+
 let AppStore = _.merge(EventEmitter.prototype, {
-  emitChange: function(){
+  emitChange(){
     this.emit(CHANGE_EVENT);
   },
 
-  addChangeListener: function(callback){
+  addChangeListener(callback){
     this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback){
+  removeChangeListener(callback){
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getCart: function(){
+  getCart(){
     return _cartItems;
   },
 
-  getCatalog: function(){
+  getCatalog(){
     return _catalog;
   },
 
-  dispatcherIndex: AppDispatcher.register(function(payload){
+  getCartTotals(){
+    return _cartTotals();
+  },
+
+  dispatcherIndex: AppDispatcher.register((payload) =>{
     let action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){
       case AppConstants.ADD_ITEM:
