@@ -1,31 +1,35 @@
-"use strict";
-
-import AppDispatcher from "./../dispatchers/app-dispatcher";
-import AppConstants from "./../constants/app-constants";
+import AppDispatcher from '../dispatchers/app-dispatcher.js';
+import AppConstants from '../constants/app-constants.js';
 import eventEmitter from 'events';
-import _ from "lodash";
+import _ from 'lodash';
 
 let EventEmitter = eventEmitter.EventEmitter;
 
-const CHANGE_EVENT = "chenge";
+const CHANGE_EVENT = 'chenge';
 
-let _catalog = [
-  {id:1, title: "Widget #1", cost:1},
-  {id:2, title: "Widget #2", cost:2},
-  {id:3, title: "Widget #3", cost:3},
-  {id:4, title: "Widget #4", cost:4}
-];
+let _catalog = [];
+
+_.times(9, (n)=>{
+  _catalog.push({
+    'id': `Widget ${n}`,
+    'title': `Widget # ${n}`,
+    'summary': 'My summary',
+    'description': 'My description',
+    'img': '/assets/product.png',
+    'cost': n
+  });
+});
 
 let _cartItems = [];
 
 function _removeItem (index) {
   _cartItems[index].inCart = false;
   _cartItems.splice(index, 1);
-};
+}
 
 function _increaseItem (index) {
   _cartItems[index].qty++;
-};
+}
 
 function _decreaseItem (index) {
   if(_cartItems[index].qty > 1) {
@@ -33,45 +37,45 @@ function _decreaseItem (index) {
   } else {
     _removeItem(index);
   }
-};
+}
 
 function _addItem(item){
   if(!item.inCart){
-    item['qty'] = 1;
-    item['inCart'] = true;
+    item.qty = 1;
+    item.inCart = true;
     _cartItems.push(item);
   }
   else {
     _cartItems.forEach(function(cartItem, i){
-      if(cartItem.id===item.id){
+      if(cartItem.id === item.id){
         _increaseItem(i);
       }
     });
   }
-};
+}
 
 let AppStore = _.merge(EventEmitter.prototype, {
-  emitChange:function(){
-    this.emit(CHANGE_EVENT)
+  emitChange: function(){
+    this.emit(CHANGE_EVENT);
   },
 
-  addChangeListener:function(callback){
-    this.on(CHANGE_EVENT, callback)
+  addChangeListener: function(callback){
+    this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener:function(callback){
-    this.removeListener(CHANGE_EVENT, callback)
+  removeChangeListener: function(callback){
+    this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getCart:function(){
-    return _cartItems
+  getCart: function(){
+    return _cartItems;
   },
 
-  getCatalog:function(){
-    return _catalog
+  getCatalog: function(){
+    return _catalog;
   },
 
-  dispatcherIndex:AppDispatcher.register(function(payload){
+  dispatcherIndex: AppDispatcher.register(function(payload){
     let action = payload.action; // this is our action from handleViewAction
     switch(action.actionType){
       case AppConstants.ADD_ITEM:
@@ -94,6 +98,6 @@ let AppStore = _.merge(EventEmitter.prototype, {
 
     return true;
   })
-})
+});
 
 export default AppStore;

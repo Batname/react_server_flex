@@ -18,9 +18,20 @@ module.exports = {
       }
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader'
+      }
+    ],
     loaders: [
     { test: /\.css$/,loader: "style-loader!css-loader" },
-    { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime' }
+    {
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      loader: 'babel-loader'
+    }
     ]
   },
 

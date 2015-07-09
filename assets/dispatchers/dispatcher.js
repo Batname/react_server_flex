@@ -1,7 +1,5 @@
-"use strict";
-
-import promise from "es6-promise";
-import _ from "lodash";
+import promise from 'es6-promise';
+import _ from 'lodash';
 
 let Promise = promise.Promise;
 
