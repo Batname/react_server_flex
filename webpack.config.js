@@ -5,7 +5,7 @@ var path = require("path"),
 module.exports = {
   cache: true,
   entry: {
-    egghead: __dirname + "/assets/index.jsx"
+    egghead: __dirname + "/assets/index.js"
   },
   output: {
     path: path.join(__dirname, "public/bundle"),
